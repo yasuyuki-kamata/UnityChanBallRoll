@@ -20,7 +20,7 @@ public class CloudBuildVersion : MonoBehaviour {
 		if (this.uiText == null) {
             return;
         }
-#if UNITY_5_3_OR_NEWER
+#if !UNITY_5_2
         var manifest = (TextAsset) Resources.Load("UnityCloudBuildManifest.json");
         if (manifest == null)
         {
