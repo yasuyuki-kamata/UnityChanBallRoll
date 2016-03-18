@@ -83,7 +83,7 @@ public class GoalChecker : MonoBehaviour {
 	{
 		Application.OpenURL("http://twitter.com/intent/tweet?text=" + 
 			WWW.EscapeURL("ユニティちゃんボウルロウルで Time:" + displayTime + 
-				" " + ball.countText.text + " 出しました http://bit.ly/1QQgwfX"));
+				" " + ball.countText.text + " 出しました https://build.cloud.unity3d.com/share/-kP0o8Piy-/webplayer/"));
 	}
 
 	public void NextStage()
