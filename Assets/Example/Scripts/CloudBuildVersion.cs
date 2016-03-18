@@ -12,7 +12,10 @@ public class CloudBuildVersion : MonoBehaviour {
         public string cloudBuildTargetName;
         public string unityVersion;
         public string buildStartTime;
-    }
+		public string scmCommitId;
+		public string projectId;
+
+	}
 
 	public Text uiText;
 	// Use this for initialization
@@ -20,7 +23,7 @@ public class CloudBuildVersion : MonoBehaviour {
 		if (this.uiText == null) {
             return;
         }
-#if !UNITY_5_2
+#if UNITY_5_3 || UNITY_5_3_OR_NEWER
         var manifest = (TextAsset) Resources.Load("UnityCloudBuildManifest.json");
         if (manifest == null)
         {
@@ -28,7 +31,13 @@ public class CloudBuildVersion : MonoBehaviour {
             return;
         }
         BuildManifest buildManifest = JsonUtility.FromJson<BuildManifest>(manifest.text);
-		this.uiText.text = buildManifest.cloudBuildTargetName + "\n" + "BuildNumber #" + buildManifest.buildNumber + "\n" + buildManifest.buildStartTime + "\n(unity ver" + buildManifest.unityVersion +")";
+		this.uiText.text = 
+			buildManifest.cloudBuildTargetName + "\n" + 
+			"BuildNumber #" + buildManifest.buildNumber + "\n" +
+			buildManifest.buildStartTime + "\n" +
+			"SCM " + buildManifest.scmCommitId + "\n" +
+			"PID " + buildManifest.projectId + "\n" +
+			"(unity ver" + buildManifest.unityVersion +")";
 #endif
 	}
 }
