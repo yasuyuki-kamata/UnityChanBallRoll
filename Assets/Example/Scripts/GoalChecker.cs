@@ -25,7 +25,7 @@ public class GoalChecker : MonoBehaviour {
 		goalText.enabled = false;
 		startTime = DateTime.Now;
 		nextButton.SetActive(false);
-		twitterButton.SetActive(false);
+		//twitterButton.SetActive(false);
 	}
 
 	void Update()
@@ -76,7 +76,7 @@ public class GoalChecker : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(3.0f);
 		nextButton.SetActive(true);
-		twitterButton.SetActive(true);
+		//twitterButton.SetActive(true);
 	}
 
 	public void Tweet()
@@ -89,8 +89,9 @@ public class GoalChecker : MonoBehaviour {
 	public void NextStage()
 	{
 		int nowSceneId = SceneManager.GetActiveScene().buildIndex;
+		//SceneManager.UnloadScene( nowSceneId );
 		nowSceneId = nowSceneId + 1;
-		if ( nowSceneId >= SceneManager.sceneCount ) {
+		if ( nowSceneId >= SceneManager.sceneCountInBuildSettings ) {
 			nowSceneId = 0;
 		}
 		SceneManager.LoadScene( nowSceneId );
