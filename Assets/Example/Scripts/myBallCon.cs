@@ -43,7 +43,7 @@ public class myBallCon : MonoBehaviour {
 			other.gameObject.SetActive(false);
 			count = count + 1;
 			SetCountText();
-			pickSnd.Play();
+			if ( pickSnd ) pickSnd.Play();
 			if ( count == totalItem ) isComplete = true;
 		}
 	}
