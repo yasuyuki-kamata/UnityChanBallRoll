@@ -48,12 +48,20 @@ public class GoalChecker : MonoBehaviour {
 			if ( isGoaled == false ) {
 				isGoaled = true;
 				goalText.enabled = true;
+
+				// ゴールした瞬間は無重量に
 				playerRb = other.GetComponent<Rigidbody>();
 				playerRb.useGravity = false;
+
+				// 操作もできなくしよう
 				ball = other.GetComponent<myBallCon>();
 				ball.enabled = false;
+
+				// 時間差で減速
 				StartCoroutine( SlowPlayer() );
+				// 時間差でインフォ表示
 				StartCoroutine( GoNextStage() );
+
 				bgm.Stop();
 				goalJingle.Play();
 			}

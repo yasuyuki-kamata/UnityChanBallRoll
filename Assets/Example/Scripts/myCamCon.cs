@@ -7,16 +7,17 @@ public class myCamCon : MonoBehaviour {
 	private Vector3 offset;
 	public bool isLookAt;
 
-	// Use this for initialization
 	void Start () {
+		// 差を取っておく
 		offset = this.transform.position - player.transform.position;
 	}
-	
-	// Update is called once per frame
+
+	// LateUpdate は全てのUpdateが終わったら処理あれるので、今回のような処理にぴったり
 	void LateUpdate () {
 		if ( isLookAt ) {
 			this.transform.LookAt( player.transform.position );
 		} else {
+			// 毎フレーム差を足しておく
 			this.transform.position = player.transform.position + offset;
 		}
 	}
