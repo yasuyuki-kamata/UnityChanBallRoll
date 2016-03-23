@@ -7,7 +7,8 @@ public class myBallCon : MonoBehaviour {
 
 	private Rigidbody rb;
 	public float speed;
-	private int count;
+	[SerializeField]
+	public int count;
 	public Text countText;
 	public AudioSource pickSnd;
 	private int totalItem;
@@ -56,6 +57,12 @@ public class myBallCon : MonoBehaviour {
 			other.gameObject.SetActive(false);
 			count = count + 1;
 			SetCountText();
+			if ( PlayerPrefs.HasKey("CoinNum") ) {
+				PlayerPrefs.SetInt("CoinNum", 1);
+			} else {
+				int coinNum = PlayerPrefs.GetInt("CoinNum");
+				PlayerPrefs.SetInt("CoinNum", coinNum + 1);
+			}
 
 			// サウンド発生
 			if ( pickSnd ) pickSnd.Play();

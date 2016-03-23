@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.Analytics;
+using System.Collections.Generic;
 
 public class GoalChecker : MonoBehaviour {
 
@@ -19,24 +21,39 @@ public class GoalChecker : MonoBehaviour {
 	public GameObject nextButton;
 	public GameObject twitterButton;
 	string displayTime;
+	int goalTimeSec;
+	public bool isStarted = false;
 
 	void Start()
 	{
 		goalText.enabled = false;
 		startTime = DateTime.Now;
 		nextButton.SetActive(false);
+		isStarted = false;
 		//twitterButton.SetActive(false);
+		displayTime = "00:00:000";
+	}
+
+	public void GameStart()
+	{
+		startTime = DateTime.Now;
+		isStarted = true;
 	}
 
 	void Update()
 	{
-		if ( isGoaled == false ) {
+		if ( isGoaled == false && isStarted ) {
 			nowTime = DateTime.Now - startTime;
 
 			displayTime = String.Format("{0:00}:{1:00}:{2:000}", 
 				nowTime.Minutes, 
 				nowTime.Seconds, 
 				nowTime.Milliseconds);
+			if ( nowTime.Minutes >= 1 ) {
+				goalTimeSec = 60;
+			} else {
+				goalTimeSec = nowTime.Seconds;
+			}
 			timerText.text = displayTime;
 		}
 	}
@@ -64,7 +81,17 @@ public class GoalChecker : MonoBehaviour {
 
 				bgm.Stop();
 				goalJingle.Play();
-			}
+
+
+				// Analytics
+				//  Use this call for wherever a player triggers a custom event
+				Analytics.CustomEvent("Goal", new Dictionary<string, object>
+					{
+						{ "scene ID", SceneManager.GetActiveScene().buildIndex },
+						{ "coins", ball.count },
+						{ "time sec",  goalTimeSec },
+					});
+				}
 		}
 	}
 
