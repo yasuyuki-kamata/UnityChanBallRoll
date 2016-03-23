@@ -2,7 +2,9 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityAnalyticsHeatmap;
+using UnityEngine.Assertions;
 
+[RequireComponent(typeof(AudioSource))]
 public class GameOverController : MonoBehaviour {
 	public GameObject gameOverPanel;
 	public myCamCon camCon;
@@ -21,6 +23,15 @@ public class GameOverController : MonoBehaviour {
 		{
 			obj.DisableAnalytics();
 		}
+
+		GameObject bgmObj = GameObject.Find("BGM");
+		Assert.IsNotNull(bgmObj);
+		AudioSource audio = bgmObj.GetComponent<AudioSource>();
+		Assert.IsNotNull(audio);
+		audio.Stop();
+
+		this.GetComponent<AudioSource>().Play();
+
 		StartCoroutine(LateOpenRetry());
 	}
 

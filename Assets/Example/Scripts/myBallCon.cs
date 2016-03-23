@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.Assertions;
 
 [RequireComponent(typeof(Rigidbody))]
 public class myBallCon : MonoBehaviour {
@@ -16,11 +17,17 @@ public class myBallCon : MonoBehaviour {
 	public float friction = 0.01f;
 	private float moveHorizontal;
 	private float moveVertical;
+	public ScoreManager scoreManager;
 
 	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
 		count= 0;
+
+		int score = 0;
+		GameObject go = GameObject.Find("CoinNumUI");
+		Assert.IsNotNull( go );
+		scoreManager = go.GetComponent<ScoreManager>();
 
 		isComplete = false;
 		totalItem = GameObject.FindGameObjectsWithTag("MyItem").Length;
@@ -57,12 +64,15 @@ public class myBallCon : MonoBehaviour {
 			other.gameObject.SetActive(false);
 			count = count + 1;
 			SetCountText();
+			int coinNum;
 			if ( PlayerPrefs.HasKey("CoinNum") ) {
-				PlayerPrefs.SetInt("CoinNum", 1);
+				coinNum = PlayerPrefs.GetInt("CoinNum");
 			} else {
-				int coinNum = PlayerPrefs.GetInt("CoinNum");
-				PlayerPrefs.SetInt("CoinNum", coinNum + 1);
+				coinNum = 0;
 			}
+			coinNum++;
+			PlayerPrefs.SetInt("CoinNum", coinNum );
+			scoreManager.UpdateCoin();
 
 			// サウンド発生
 			if ( pickSnd ) pickSnd.Play();

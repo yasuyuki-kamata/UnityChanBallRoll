@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
+using UnityEngine.Analytics;
 
 public class CharacterSelectionController : MonoBehaviour 
 {
@@ -12,18 +13,18 @@ public class CharacterSelectionController : MonoBehaviour
 	public GameObject playerObj;
 	private GoalChecker goalChecker;
 
-	private Button OldLadyButton;
+	private Button newOneButton;
 	// Use this for initialization
 	void Awake () 
 	{
-		OldLadyButton = newOneUI.GetComponent<Button>();
-		if (PlayerPrefs.GetInt("OldLadyUnlocked") == 0)
+		newOneButton = newOneUI.GetComponent<Button>();
+		if (PlayerPrefs.GetInt("NewCharaUnlocked") == 0)
 		{
-			OldLadyButton.interactable = false;
+			newOneButton.interactable = false;
 		}
 		else
 		{
-			OldLadyButton.interactable = true;
+			newOneButton.interactable = true;
 		}
 		playerObj.SetActive(false);
 		defaultChara.SetActive(false);
@@ -64,6 +65,26 @@ public class CharacterSelectionController : MonoBehaviour
 
 	void CommonStart()
 	{
+		int score = 0;
+		if (PlayerPrefs.HasKey("CoinNum"))
+		{
+			score = PlayerPrefs.GetInt("CoinNum");
+		}
+		score -= 10;
+		if ( score < 0 ) score = 0;
+		PlayerPrefs.SetInt("CoinNum", score);
+		GameObject go = GameObject.Find("CoinNumUI");
+		Assert.IsNotNull(go);
+		ScoreManager sm = go.GetComponent<ScoreManager>();
+		Assert.IsNotNull(sm);
+		sm.UpdateCoin();
+
+		GameObject bgmObj = GameObject.Find("BGM");
+		Assert.IsNotNull(bgmObj);
+		AudioSource audio = bgmObj.GetComponent<AudioSource>();
+		Assert.IsNotNull(audio);
+		audio.Play();
+
 		characterSelectionPanel.SetActive(false);
 		playerObj.SetActive(true);
 		goalChecker.GameStart();
