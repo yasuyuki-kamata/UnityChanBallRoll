@@ -20,6 +20,7 @@ namespace CompleteProject
 		private float moveHorizontal;
 		private float moveVertical;
 		private ScoreManager scoreManager;
+		private GameObject gyroObj;
 
 		void Start()
 		{
@@ -31,6 +32,9 @@ namespace CompleteProject
 			Assert.IsNotNull( go );
 			scoreManager = go.GetComponent<ScoreManager>();
 
+			gyroObj = GameObject.Find("GyroObj");
+			Assert.IsNotNull(gyroObj);
+
 			isComplete = false;
 			totalItem = GameObject.FindGameObjectsWithTag("MyItem").Length;
 			SetCountText();
@@ -39,8 +43,13 @@ namespace CompleteProject
 		void Update()
 		{
 			// Input系はUpdateで
+			#if UNITY_IOS || UNITY_ANDROID
+			moveHorizontal = gyroObj.transform.forward.x;
+			moveVertical = gyroObj.transform.forward.z;
+			#else
 			moveHorizontal = Input.GetAxis("Horizontal");
 			moveVertical = Input.GetAxis("Vertical");
+			#endif
 		}
 
 		void FixedUpdate()
