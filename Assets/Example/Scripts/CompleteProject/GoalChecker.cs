@@ -84,14 +84,13 @@ namespace CompleteProject
 					bgm.Stop();
 					goalJingle.Play();
 
-
-					// Analytics
-					//  Use this call for wherever a player triggers a custom event
+					// CustomEvent を作る
 					Analytics.CustomEvent("Goal", new Dictionary<string, object>
 						{
 							{ "scene ID", SceneManager.GetActiveScene().buildIndex },
 							{ "coins", ball.count },
 							{ "time sec",  goalTimeSec },
+							{ "time bar",  goalTimeSec.ToString() },
 						});
 					}
 			}

@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityAnalyticsHeatmap;
 using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 
 namespace CompleteProject
 {
@@ -19,12 +20,15 @@ namespace CompleteProject
 
 		void OnTriggerEnter(Collider other) 
 		{
+			Assert.AreEqual<string>( other.gameObject.name, "Player");
+
 			camCon.isLookAt = true;
-			PositionTracker [] objs = GameObject.FindObjectsOfType<PositionTracker>();
-			foreach( IAnalyticsDispatcher obj in objs ) 
-			{
-				obj.DisableAnalytics();
-			}
+
+			// ここでPositionTrackerをオフにする
+			ExecuteEvents.Execute<IAnalyticsDispatcher>(
+				target: other.gameObject, // 呼び出す対象のオブジェクト
+				eventData: null,  // イベントデータ（モジュール等の情報）
+				functor: (x,y)=>x.DisableAnalytics()); // 操作
 
 			GameObject bgmObj = GameObject.Find("BGM");
 			Assert.IsNotNull(bgmObj);

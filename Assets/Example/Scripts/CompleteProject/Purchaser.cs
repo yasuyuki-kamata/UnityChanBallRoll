@@ -36,9 +36,6 @@ namespace CompleteProject
 //		private static string kProductNameGooglePlayNonConsumable = "nonconsumable";     // Google Play Store identifier for the non-consumable product.
 //		private static string kProductNameGooglePlaySubscription =  "subscription";  // Google Play Store identifier for the subscription product.
 
-
-		public GameObject score;
-
 		void Awake()
 		{
 			// If we haven't set up the Unity Purchasing reference
@@ -225,6 +222,7 @@ namespace CompleteProject
 			if (String.Equals(args.purchasedProduct.definition.id, kProductIDConsumable, StringComparison.Ordinal))
 			{
 				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));//If the consumable item has been successfully purchased, add 100 coins to the player's in-game score.ScoreManager.score += 100;
+				// ここに消費アイテムを買った時の処理を入れる
 				PlayerPrefs.SetInt("CoinNum", PlayerPrefs.GetInt("CoinNum") + 100);
 				GameObject.Find("CoinNumUI").GetComponent<ScoreManager>().UpdateCoin();
 			}
@@ -234,6 +232,7 @@ namespace CompleteProject
 			else if (String.Equals(args.purchasedProduct.definition.id, kProductIDNonConsumable, StringComparison.Ordinal))
 			{
 				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+				// ここに非消費アイテムを買った時の処理を入れる
 				PlayerPrefs.SetInt("NewCharaUnlocked", 1);
 			}// Or ... a subscription product has been purchased by this user.
 			else if (String.Equals(args.purchasedProduct.definition.id, kProductIDSubscription, StringComparison.Ordinal))

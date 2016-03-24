@@ -19,7 +19,7 @@ namespace CompleteProject
 		public float friction = 0.01f;
 		private float moveHorizontal;
 		private float moveVertical;
-		public ScoreManager scoreManager;
+		private ScoreManager scoreManager;
 
 		void Start()
 		{

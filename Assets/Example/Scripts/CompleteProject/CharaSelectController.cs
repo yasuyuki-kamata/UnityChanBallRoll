@@ -2,11 +2,10 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
-using UnityEngine.Analytics;
 
 namespace CompleteProject
 {
-	public class CharacterSelectionController : MonoBehaviour 
+	public class CharaSelectController : MonoBehaviour 
 	{
 		public GameObject characterSelectionPanel;
 		public GameObject newOneUI;
@@ -20,6 +19,11 @@ namespace CompleteProject
 		void Awake () 
 		{
 			newOneButton = newOneUI.GetComponent<Button>();
+			playerObj.SetActive(false);
+			defaultChara.SetActive(false);
+			newOneChara.SetActive(false);
+
+			// 非消費アイテムを買ったか否かで表示非表示の判定
 			if (PlayerPrefs.GetInt("NewCharaUnlocked") == 0)
 			{
 				newOneButton.interactable = false;
@@ -28,9 +32,6 @@ namespace CompleteProject
 			{
 				newOneButton.interactable = true;
 			}
-			playerObj.SetActive(false);
-			defaultChara.SetActive(false);
-			newOneChara.SetActive(false);
 		}
 
 		void Start()
