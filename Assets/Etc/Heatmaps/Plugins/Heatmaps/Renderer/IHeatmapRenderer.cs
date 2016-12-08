@@ -17,19 +17,38 @@ namespace UnityAnalyticsHeatmap
         /// <param name="data">An array of HeatPoints defining the map and its density.</param>
         /// <param name="maxDensity">Density value considered to be 100%.</param>
         void UpdatePointData(HeatPoint[] data, float maxDensity);
-
+        
         /// <summary>
-        /// Defines the colors that draw the heatmap
+        /// [Obsolete] Defines the colors that draw the heatmap
         /// </summary>
         /// <param name="colors">An array of colors with which to display heat density.</param>
+        [Obsolete]
         void UpdateColors(Color[] colors);
+        
+        /// <summary>
+        /// Defines a grradient that colors the heatmap
+        /// </summary>
+        /// <param name="gradient">A gradient with which to compute heat density.</param>
+        void UpdateGradient(Gradient gradient);
 
         /// <summary>
-        /// Tweak value thresholds that differentiate colors.
+        /// [Obsolete] Tweak value thresholds that differentiate colors.
         /// </summary>
         /// By default, colors divide evenly. Use thesholds to arrange non-standard splits.
         /// <param name="thresholds">A list of floats (probably one less than the number of colors used in SetColors).</param>
+        [Obsolete]
         void UpdateThresholds(float[] thresholds);
+
+        /// <summary>
+        /// Updates a mask which trims the rendered points.
+        /// </summary>
+        /// <param name="lowX">The lowest X position to render as a percent from 0-1.</param>
+        /// <param name="highX">The greatest X position to render as a percent from 0-1.</param>
+        /// <param name="lowY">The lowest Y position to render as a percent from 0-1.</param>
+        /// <param name="highY">The highest position to render as a percent from 0-1.</param>
+        /// <param name="lowZ">The lowest Z position to render as a percent from 0-1.</param>
+        /// <param name="highZ">The highest Z position to render as a percent from 0-1.</param>
+        void UpdateRenderMask(float lowX, float highX, float lowY, float highY, float lowZ, float highZ);
 
         /// <summary>
         /// Updates the time limits.
@@ -50,7 +69,7 @@ namespace UnityAnalyticsHeatmap
         /// Currently, RenderShape includes the options CUBE, SQUARE, and TRI,
         /// and RenderDirection includes YZ, XZ and XY
         /// <param name="style">A RenderShape Enum.</param>
-        /// /// <param name="style">A RenderDirection Enum.</param>
+        /// <param name="style">A RenderDirection Enum.</param>
         void UpdateRenderStyle(RenderShape style, RenderDirection direction);
 
         /// <summary>
@@ -64,6 +83,12 @@ namespace UnityAnalyticsHeatmap
         /// </summary>
         /// <value><c>true</c> if allow render; otherwise, <c>false</c>.</value>
         bool allowRender{ get; set; }
+
+        /// <summary>
+        /// If true, activate point-by-point tooltips.
+        /// </summary>
+        /// <value><c>true</c> if activating; otherwise, <c>false</c>.</value>
+        bool activateTips{ get; set; }
 
         /// <summary>
         /// The number of points currently displayed.

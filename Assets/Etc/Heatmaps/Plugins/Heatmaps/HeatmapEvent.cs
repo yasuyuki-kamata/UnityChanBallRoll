@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 ||  UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5_0
+#if UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 ||  UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5_0
 using analyticsResultNamespace = UnityEngine.Cloud.Analytics;
 using analyticsEventNamespace = UnityEngine.Cloud.Analytics.UnityAnalytics;
 
@@ -94,11 +94,38 @@ namespace UnityAnalyticsHeatmap
         }
 
         /// <summary>
+        /// Send the event with position, destination and an optional dictionary.
+        /// </summary>
+        public static analyticsResultNamespace.AnalyticsResult Send(string eventName, Vector3 v, Vector3 v1, Dictionary<string, object> options = null)
+        {
+            AddXY(v.x, v.y);
+            AddZ(v.z);
+            AddDestination(v1);
+            AddOptions(options);
+            return Commit(eventName);
+        }
+
+        /// <summary>
+        /// Send the event with position, destination, time and an optional dictionary.
+        /// </summary>
+        public static analyticsResultNamespace.AnalyticsResult Send(string eventName, Vector3 v, Vector3 v1, float time, Dictionary<string, object> options = null)
+        {
+            AddXY(v.x, v.y);
+            AddZ(v.z);
+            AddDestination(v1);
+            AddTime(time);
+            AddOptions(options);
+            return Commit(eventName);
+        }
+
+        /// <summary>
         /// Transmit the event
         /// </summary>
         protected static analyticsResultNamespace.AnalyticsResult Commit(string eventName)
         {
-            return analyticsEventNamespace.CustomEvent("Heatmap." + eventName, s_Dictionary);
+            analyticsResultNamespace.AnalyticsResult result = analyticsEventNamespace.CustomEvent("Heatmap." + eventName, s_Dictionary);
+            s_Dictionary.Clear();
+            return result;
         }
 
         /// <summary>
@@ -134,6 +161,13 @@ namespace UnityAnalyticsHeatmap
             s_Dictionary["rx"] = r.x;
             s_Dictionary["ry"] = r.y;
             s_Dictionary["rz"] = r.z;
+        }
+
+        protected static void AddDestination(Vector3 v)
+        {
+            s_Dictionary["dx"] = v.x;
+            s_Dictionary["dy"] = v.y;
+            s_Dictionary["dz"] = v.z;
         }
 
         /// <summary>

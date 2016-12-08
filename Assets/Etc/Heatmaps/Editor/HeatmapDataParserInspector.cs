@@ -20,12 +20,17 @@ namespace UnityAnalyticsHeatmap
         string m_Path = "";
 
         Dictionary<string, HeatPoint[]> m_HeatData;
-        float m_MaxDensity = 0;
-        float m_MaxTime = 0;
+        Vector3 m_LowSpace;
+        Vector3 m_HighSpace;
+
+        bool m_KeyFound = true;
         int m_OptionIndex = 0;
         string[] m_OptionKeys;
 
-        public delegate void PointHandler(HeatPoint[] heatData, float maxDensity, float maxTime);
+        List<List<string>> m_SeparatedLists;
+        List<int> m_Options;
+
+        public delegate void PointHandler(HeatPoint[] heatData);
 
         PointHandler m_PointHandler;
 
@@ -45,7 +50,16 @@ namespace UnityAnalyticsHeatmap
 
         void Dispatch()
         {
-            m_PointHandler(m_HeatData[m_OptionKeys[m_OptionIndex]], m_MaxDensity, m_MaxTime);
+            m_KeyFound = true;
+            string key = BuildKey();
+            if (m_HeatData.ContainsKey(key))
+            {
+                m_PointHandler(m_HeatData[key]);
+            }
+            else
+            {
+                m_KeyFound = false;
+            }
         }
 
         public void SetDataPath(string jsonPath)
@@ -58,40 +72,96 @@ namespace UnityAnalyticsHeatmap
         {
             if (m_HeatData != null && m_OptionKeys != null && m_OptionIndex > -1 && m_OptionIndex < m_OptionKeys.Length && m_HeatData.ContainsKey(m_OptionKeys[m_OptionIndex]))
             {
-                int oldIndex = m_OptionIndex;
-                m_OptionIndex = EditorGUILayout.Popup("Option", m_OptionIndex, m_OptionKeys);
-                if (m_OptionIndex != oldIndex)
+                string oldKey = BuildKey();
+
+                for(int a = 0; a < m_SeparatedLists.Count; a++)
                 {
-                    RecalculateMax();
+                    var listArray = m_SeparatedLists[a].ToArray();
+                    m_Options[a] = EditorGUILayout.Popup(m_Options[a], listArray);
+                }
+                if (BuildKey() != oldKey)
+                {
                     Dispatch();
                 }
             }
-        }
-
-        void RecalculateMax()
-        {
-            HeatPoint[] points = m_HeatData[m_OptionKeys[m_OptionIndex]];
-            m_MaxDensity = 0;
-            m_MaxTime = 0;
-
-            for (int i = 0; i < points.Length; i++)
+            if (!m_KeyFound)
             {
-                m_MaxDensity = Mathf.Max(m_MaxDensity, points[i].density);
-                m_MaxTime = Mathf.Max(m_MaxTime, points[i].time);
+                EditorGUILayout.HelpBox("No matching combination.", MessageType.Warning);
             }
         }
 
-        void ParseHandler(Dictionary<string, HeatPoint[]> heatData, float maxDensity, float maxTime, string[] options)
+        void ParseHandler(Dictionary<string, HeatPoint[]> heatData, string[] options)
         {
             m_HeatData = heatData;
             if (heatData != null)
             {
+                if (m_OptionKeys != null)
+                {
+                    string opt = m_OptionIndex > m_OptionKeys.Length ? "" : m_OptionKeys[m_OptionIndex];
+                    ArrayList list = new ArrayList(options);
+                    int idx = list.IndexOf(opt);
+                    m_OptionIndex = idx == -1 ? 0 : idx;
+                }
+                else
+                {
+                    m_OptionIndex = 0;
+                }
+                ParseOptionList(options);
                 m_OptionKeys = options;
-                m_OptionIndex = 0;
-                m_MaxDensity = maxDensity;
-                m_MaxTime = maxTime;
                 Dispatch();
             }
+        }
+
+        void ParseOptionList(string[] options)
+        {
+            string[] oldKey = BuildKey().Split('~');
+            m_SeparatedLists = new List<List<string>>();
+            m_Options = new List<int>();
+
+            foreach(string opt in options)
+            {
+                string[] parts = opt.Split('~');
+
+                for (int a = 0; a < parts.Length; a++)
+                {
+                    if (m_SeparatedLists.Count <= a)
+                    {
+                        m_SeparatedLists.Add(new List<string>());
+                    }
+                    if (m_SeparatedLists[a].IndexOf(parts[a]) == -1)
+                    {
+                        m_SeparatedLists[a].Add(parts[a]);
+                    }
+                }
+            }
+            for (int a = 0; a < m_SeparatedLists.Count; a++)
+            {
+                // Restore old indices when possible
+                int index = 0;
+                if (oldKey.Length > a)
+                {
+                    index = m_SeparatedLists[a].IndexOf(oldKey[a]);
+                    index = Math.Max(0, index);
+                }
+                m_Options.Add(index);
+            }
+        }
+
+        string BuildKey()
+        {
+            string retv = "";
+            if (m_SeparatedLists != null)
+            {
+                for (int a = 0; a < m_SeparatedLists.Count; a++)
+                {
+                    retv += m_SeparatedLists[a][m_Options[a]];
+                    if (a < m_SeparatedLists.Count - 1)
+                    {
+                        retv += "~";
+                    }
+                }
+            }
+            return retv;
         }
     }
 }

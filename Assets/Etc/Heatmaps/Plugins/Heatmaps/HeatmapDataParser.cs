@@ -24,7 +24,7 @@ namespace UnityAnalyticsHeatmap
 {
     public class HeatmapDataParser
     {
-        public delegate void ParseHandler(Dictionary<string, HeatPoint[]> heatData, float maxDensity, float maxTime, string[] options);
+        public delegate void ParseHandler(Dictionary<string, HeatPoint[]> heatData, string[] options);
 
         ParseHandler m_ParseHandler;
 
@@ -87,6 +87,8 @@ namespace UnityAnalyticsHeatmap
             var keys = new ArrayList();
             float maxDensity = 0;
             float maxTime = 0;
+            Vector3 lowSpace = Vector3.zero;
+            Vector3 highSpace = Vector3.zero;
 
             Dictionary<string, object> data = Json.Deserialize(text) as Dictionary<string, object>;
             foreach (KeyValuePair<string, object> kv in data)
@@ -98,7 +100,7 @@ namespace UnityAnalyticsHeatmap
                 for (int a = 0, aa = pointList.Count; a < aa; a++)
                 {
                     array[a] = new HeatPoint();
-                    float x = 0, y = 0, z = 0, t = 0, rx = 0, ry = 0, rz = 0;
+                    float x = 0, y = 0, z = 0, t = 0, rx = 0, ry = 0, rz = 0, dx = 0, dy = 0, dz = 0;
                     float d = 0;
                     var pt = pointList[a] as Dictionary<string, object>;
 
@@ -131,21 +133,41 @@ namespace UnityAnalyticsHeatmap
                             case "rz":
                                 rz = value;
                                 break;
+                            case "dx":
+                                dx = value;
+                                break;
+                            case "dy":
+                                dy = value;
+                                break;
+                            case "dz":
+                                dz = value;
+                                break;
                         }
                     }
                     array[a].position = new Vector3(x, y, z);
                     array[a].rotation = new Vector3(rx, ry, rz);
+                    array[a].destination = new Vector3(dx, dy, dz);
                     array[a].density = d;
                     array[a].time = t;
                     maxDensity = Mathf.Max(d, maxDensity);
                     maxTime = Mathf.Max(array[a].time, maxTime);
+                    if (a == 0)
+                    {
+                        lowSpace = highSpace = array[a].position;
+                    }
+                    else
+                    {
+                        lowSpace = Vector3.Min(array[a].position, lowSpace);
+                        highSpace = Vector3.Max(array[a].position, highSpace);
+                    }
+
                 }
                 heatData[kv.Key] = array;
             }
 
             if (m_ParseHandler != null)
             {
-                m_ParseHandler(heatData, maxDensity, maxTime, keys.ToArray(typeof(string)) as string[]);
+                m_ParseHandler(heatData, keys.ToArray(typeof(string)) as string[]);
             }
         }
     }
