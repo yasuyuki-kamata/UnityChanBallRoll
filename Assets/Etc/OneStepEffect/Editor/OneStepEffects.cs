@@ -222,7 +222,7 @@ public class OneStepEffects : EditorWindow {
 			renderer.gameObject.isStatic = true;
 		}
 		Lightmapping.giWorkflowMode = Lightmapping.GIWorkflowMode.OnDemand;
-		LightmapEditorSettings.resolution = lightRealtimeResolution;
+		LightmapEditorSettings.realtimeResolution = lightRealtimeResolution;
 		RenderSettings.ambientIntensity = lightAmbientIntensity;
 		RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Skybox;
 		RenderSettings.skybox = mySkybox;
@@ -294,7 +294,7 @@ public class OneStepEffects : EditorWindow {
 								AssetDatabase.CopyAsset( path, nmlPath );
 							}
 							TextureImporter ti = AssetImporter.GetAtPath(nmlPath) as TextureImporter;
-							ti.textureType = TextureImporterType.Bump;
+							ti.textureType = TextureImporterType.NormalMap;
 							ti.convertToNormalmap = true;
 							AssetDatabase.ImportAsset(nmlPath, ImportAssetOptions.ForceUpdate);
 							nmlTex = AssetDatabase.LoadAssetAtPath<Texture>( nmlPath );

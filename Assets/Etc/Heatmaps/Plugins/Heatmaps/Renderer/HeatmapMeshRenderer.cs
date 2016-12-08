@@ -333,7 +333,7 @@ public class HeatmapMeshRenderer : MonoBehaviour, IHeatmapRenderer
             mesh.SetTriangles(t, j);
         }
         go.GetComponent<Renderer>().materials = materials;
-        mesh.Optimize();
+        ;
 
     }
 
