@@ -15,6 +15,7 @@ using UnityEngine.UI;
 using UnityEngine.Purchasing.Security;
 #endif
 
+#if UNITY_PURCHASING
 /// <summary>
 /// An example of basic Unity IAP functionality.
 /// To use with your account, configure the product ids (AddProduct)
@@ -587,3 +588,4 @@ public class IAPDemo : MonoBehaviour, IStoreListener
 		return GameObject.Find(which).GetComponent<Text>();
 	}
 }
+#endif
