@@ -964,6 +964,48 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 192009425}
+--- !u!1001 &198433177
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4121732721520244, guid: 556f532e3244e4da38a4562dcfd7d419, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4121732721520244, guid: 556f532e3244e4da38a4562dcfd7d419, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4121732721520244, guid: 556f532e3244e4da38a4562dcfd7d419, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4121732721520244, guid: 556f532e3244e4da38a4562dcfd7d419, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4121732721520244, guid: 556f532e3244e4da38a4562dcfd7d419, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4121732721520244, guid: 556f532e3244e4da38a4562dcfd7d419, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4121732721520244, guid: 556f532e3244e4da38a4562dcfd7d419, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4121732721520244, guid: 556f532e3244e4da38a4562dcfd7d419, type: 2}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 556f532e3244e4da38a4562dcfd7d419, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &205585664
 Prefab:
   m_ObjectHideFlags: 0
@@ -10164,7 +10206,7 @@ GameObject:
   - component: {fileID: 1512822137}
   - component: {fileID: 1512822139}
   m_Layer: 0
-  m_Name: NCMB_Login
+  m_Name: NCMB_Script
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10204,7 +10246,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1512822136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 456955a096ee94b4f982837d8d43debc, type: 3}
+  m_Script: {fileID: 11500000, guid: a8e6ac2cadef84cf09fb96e8c3fa6c5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   UserName: {fileID: 976569249}
