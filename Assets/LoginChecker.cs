@@ -7,8 +7,6 @@ public class LoginChecker : MonoBehaviour
 	[SerializeField] GameObject BeforeLoginUIPanel;
 	[SerializeField] GameObject AfterLoginUIPanel;
 
-	[SerializeField] bool isDebug;
-
 	public void DisplayNCMBPanelBeforeLogin()
 	{
 		BeforeLoginUIPanel.SetActive (true);
@@ -19,17 +17,5 @@ public class LoginChecker : MonoBehaviour
 	{
 		BeforeLoginUIPanel.SetActive (false);
 		AfterLoginUIPanel.SetActive (true);
-	}
-
-	void OnGUI ()
-	{
-		if (isDebug) {
-			if (GUILayout.Button ("Login")) {
-				DisplayNCMBPanelAfterLogin ();
-			}
-			if (GUILayout.Button ("Logout")) {
-				DisplayNCMBPanelBeforeLogin ();
-			}
-		}
 	}
 }
