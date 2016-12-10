@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.UI;
-#if UNITY_PURCHASING
+
 // Deriving the Purchaser class from IStoreListener enables it to receive messages from Unity Purchasing.
 public class Purchaser : MonoBehaviour, IStoreListener
 {
@@ -247,4 +247,3 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}",product.definition.storeSpecificId, failureReason));
 	}
 }
-#endif
